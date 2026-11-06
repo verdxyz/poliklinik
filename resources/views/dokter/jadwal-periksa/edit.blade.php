@@ -16,12 +16,14 @@
             </div>
             <div>
                 <label for="jam_mulai" class="label font-semibold">Jam Mulai <span class="text-error">*</span></label>
-                <input id="jam_mulai" type="time" name="jam_mulai" value="{{ old('jam_mulai', substr($jadwal->jam_mulai, 0, 5)) }}" required class="input input-bordered w-full @error('jam_mulai') input-error @enderror">
+                <input id="jam_mulai" type="text" name="jam_mulai" value="{{ old('jam_mulai', substr($jadwal->jam_mulai, 0, 5)) }}" placeholder="HH:MM (contoh: 08:00)" pattern="([01][0-9]|2[0-3]):[0-5][0-9]" required class="input input-bordered w-full @error('jam_mulai') input-error @enderror">
+                <p class="mt-1 text-sm text-slate-500">Gunakan format 24 jam (HH:MM).</p>
                 @error('jam_mulai')<p class="mt-1 text-sm text-error">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label for="jam_selesai" class="label font-semibold">Jam Selesai <span class="text-error">*</span></label>
-                <input id="jam_selesai" type="time" name="jam_selesai" value="{{ old('jam_selesai', substr($jadwal->jam_selesai, 0, 5)) }}" required class="input input-bordered w-full @error('jam_selesai') input-error @enderror">
+                <input id="jam_selesai" type="text" name="jam_selesai" value="{{ old('jam_selesai', substr($jadwal->jam_selesai, 0, 5)) }}" placeholder="HH:MM (contoh: 17:00)" pattern="([01][0-9]|2[0-3]):[0-5][0-9]" required class="input input-bordered w-full @error('jam_selesai') input-error @enderror">
+                <p class="mt-1 text-sm text-slate-500">Jam selesai harus setelah jam mulai pada hari yang sama.</p>
                 @error('jam_selesai')<p class="mt-1 text-sm text-error">{{ $message }}</p>@enderror
             </div>
             <div>

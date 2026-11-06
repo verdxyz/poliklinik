@@ -63,6 +63,28 @@
     background: linear-gradient(135deg, #162156, #1e2d6b);
 }
 
+.fab-daftar-poli {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 20px;
+    border-radius: 9999px;
+    background: #f59e0b;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(245, 158, 11, 0.4);
+    text-decoration: none;
+}
+
+.fab-daftar-poli:hover {
+    background: #d97706;
+}
+
 /* 4. Custom Class Styles */
 body {
     background-color: #f1f5f9;

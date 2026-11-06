@@ -56,6 +56,14 @@
 
     </div>
 
+    @if(auth()->user()?->role === 'pasien' && ! request()->routeIs('pasien.daftar'))
+        <a href="{{ route('pasien.daftar') }}"
+            class="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/40 transition hover:bg-amber-600">
+            <i class="fas fa-notes-medical"></i>
+            Daftar Poli
+        </a>
+    @endif
+
     <script>
         function toggleSidebar(){
             const sidebar=document.getElementById('appSidebar')

@@ -109,4 +109,39 @@ class JadwalPeriksaCrudTest extends TestCase
         $this->get(route('jadwal-periksa.edit', $foreignSchedule))->assertNotFound();
         $this->delete(route('jadwal-periksa.destroy', $foreignSchedule))->assertNotFound();
     }
+
+    public function test_schedule_form_uses_24_hour_time_and_rejects_end_time_before_start(): void
+    {
+        $doctor = $this->doctor();
+        $this->actingAs($doctor)
+            ->get(route('jadwal-periksa.create'))
+            ->assertOk()
+            ->assertSee('type="text" name="jam_mulai"', false)
+            ->assertSee('type="text" name="jam_selesai"', false)
+            ->assertSee('format 24 jam (HH:MM)');
+
+        $this->post(route('jadwal-periksa.store'), [
+            'hari' => 'Jumat',
+            'jam_mulai' => '22:10',
+            'jam_selesai' => '23:12',
+            'status' => 'aktif',
+        ])->assertRedirect(route('jadwal-periksa.index'));
+
+        $this->assertDatabaseHas('jadwal_periksa', [
+            'id_dokter' => $doctor->id,
+            'hari' => 'Jumat',
+            'jam_mulai' => '22:10',
+            'jam_selesai' => '23:12',
+        ]);
+
+        $this->from(route('jadwal-periksa.create'))
+            ->post(route('jadwal-periksa.store'), [
+                'hari' => 'Jumat',
+                'jam_mulai' => '22:10',
+                'jam_selesai' => '10:12',
+                'status' => 'aktif',
+            ])
+            ->assertRedirect(route('jadwal-periksa.create'))
+            ->assertSessionHasErrors('jam_selesai');
+    }
 }

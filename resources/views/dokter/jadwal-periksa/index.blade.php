@@ -10,7 +10,7 @@
     <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
         <table class="table">
             <thead class="bg-slate-50 text-slate-600">
-                <tr><th>Hari</th><th>Jam Mulai</th><th>Jam Selesai</th><th>Status</th><th class="text-right">Aksi</th></tr>
+                <tr><th>Hari</th><th>Jam Mulai</th><th>Jam Selesai</th><th>Status</th><th>Pasien Terdaftar</th><th class="text-right">Aksi</th></tr>
             </thead>
             <tbody>
                 @forelse($jadwals as $jadwal)
@@ -19,6 +19,14 @@
                         <td>{{ substr($jadwal->jam_mulai, 0, 5) }}</td>
                         <td>{{ substr($jadwal->jam_selesai, 0, 5) }}</td>
                         <td><span class="badge {{ $jadwal->status === 'aktif' ? 'badge-success' : 'badge-ghost' }}">{{ ucfirst($jadwal->status) }}</span></td>
+                        <td>
+                            <div class="font-semibold text-slate-800">{{ $jadwal->daftar_polis_count }} pasien</div>
+                            @if ($jadwal->daftarPolis->isNotEmpty())
+                                <div class="mt-1 text-xs text-slate-500">
+                                    {{ $jadwal->daftarPolis->pluck('pasien.nama')->filter()->join(', ') }}
+                                </div>
+                            @endif
+                        </td>
                         <td>
                             <div class="flex justify-end gap-2">
                                 <a href="{{ route('jadwal-periksa.edit', $jadwal) }}" class="btn btn-sm btn-warning text-white"><i class="fas fa-pen"></i> Edit</a>
@@ -30,7 +38,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="py-10 text-center text-slate-500">Belum ada jadwal periksa.</td></tr>
+                    <tr><td colspan="6" class="py-10 text-center text-slate-500">Belum ada jadwal periksa.</td></tr>
                 @endforelse
             </tbody>
         </table>

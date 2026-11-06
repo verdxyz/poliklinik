@@ -14,9 +14,14 @@ class JadwalPeriksaController extends Controller
 
     public function index()
     {
-        $jadwals = Auth::user()->jadwalPeriksas()->orderByRaw(
-            "CASE hari WHEN 'Senin' THEN 1 WHEN 'Selasa' THEN 2 WHEN 'Rabu' THEN 3 WHEN 'Kamis' THEN 4 WHEN 'Jumat' THEN 5 WHEN 'Sabtu' THEN 6 WHEN 'Minggu' THEN 7 END"
-        )->orderBy('jam_mulai')->get();
+        $jadwals = Auth::user()->jadwalPeriksas()
+            ->with(['daftarPolis.pasien'])
+            ->withCount('daftarPolis')
+            ->orderByRaw(
+                "CASE hari WHEN 'Senin' THEN 1 WHEN 'Selasa' THEN 2 WHEN 'Rabu' THEN 3 WHEN 'Kamis' THEN 4 WHEN 'Jumat' THEN 5 WHEN 'Sabtu' THEN 6 WHEN 'Minggu' THEN 7 END"
+            )
+            ->orderBy('jam_mulai')
+            ->get();
 
         return view('dokter.jadwal-periksa.index', compact('jadwals'));
     }
